@@ -17,10 +17,10 @@ const HomePage: React.FC = () => {
                 <Link to="/" className="text-gray-700 hover:text-blue-500 no-underline align-middle">Home</Link>
               </li>
               <li className="mr-6">
-                <Link to="/login" className="text-gray-700 hover:text-blue-500 no-underline align-middle">Login</Link>
-              </li>
-              <li>
                 <Link to="/example-video" className="text-gray-700 hover:text-blue-500 no-underline align-middle">Example Video</Link>
+              </li>
+              <li className="mr-6">
+                <Link to="/login" className="text-gray-700 hover:text-blue-500 no-underline align-middle">Login</Link>
               </li>
             </ul>
           </nav>
