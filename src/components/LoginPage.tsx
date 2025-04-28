@@ -1,77 +1,24 @@
-import React, { useState, ChangeEvent, FormEvent } from 'react';
-import { Link, useNavigate } from 'react-router-dom'; // Import useNavigate for redirection
-
-interface LoginFormState {
-  username: string;
-  password: string;
-  error: string | null;
-}
+import React from 'react';
 
 const LoginPage: React.FC = () => {
-  const [state, setState] = useState<LoginFormState>({
-    username: '',
-    password: '',
-    error: null,
-  });
+  const discordClientId = import.meta.env.VITE_DISCORD_CLIENT_ID; // Replace with your Client ID
+  const redirectUri = import.meta.env.VITE_DISCORD_REDIRECT_URI; // Replace with your backend callback URL
+  const discordAuthUrl = `https://discord.com/oauth2/authorize?client_id=${discordClientId}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=code&scope=identify%20guilds`;
 
-  const navigate = useNavigate(); // Hook to handle navigation
-
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    setState(prevState => ({
-      ...prevState,
-      [name]: value,
-      error: null,
-    }));
-  };
-
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    console.log('Login submitted:', state.username, state.password);
-    if (state.username !== 'test' || state.password !== 'password') {
-      setState(prevState => ({ ...prevState, error: 'Invalid username or password' }));
-    } else {
-      console.log('Login successful!');
-      // In a real app, you'd likely redirect to the homepage here
-      navigate('/dashboard');
-    }
+  const handleDiscordLogin = () => {
+    window.location.href = discordAuthUrl;
   };
 
   return (
-    <div>
-      <h2>Login</h2>
-      {state.error && <p style={{ color: 'red' }}>{state.error}</p>}
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="username">Username:</label>
-          <input
-            type="text"
-            id="username"
-            name="username"
-            value={state.username}
-            onChange={handleChange}
-          />
-        </div>
-        <div>
-          <label htmlFor="password">Password:</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            value={state.password}
-            onChange={handleChange}
-          />
-        </div>
-        <button type="submit">Log In</button>
-      </form>
-      <p style={{ marginTop: '10px' }}>
-        <Link to="/forgot-password">Forgot Password?</Link>
-      </p>
-      <button style={{ marginTop: '10px' }}>
-        <img src="/discord-logo.png" alt="Login with Discord" style={{ height: '20px', marginRight: '5px', verticalAlign: 'middle' }} />
-        Login with Discord
+    <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
+      <h1 className="text-3xl font-bold text-gray-900 mb-6">Log In with Discord</h1>
+      <button
+        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+        onClick={handleDiscordLogin}
+      >
+        Log In with Discord
       </button>
-      {/* You'll need to handle the Discord login flow separately */}
+      {/* You might add other login options later */}
     </div>
   );
 };
